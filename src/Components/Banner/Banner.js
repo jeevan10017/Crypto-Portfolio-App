@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@mui/styles';
 import { Container, Typography } from '@mui/material';
 import backgroundImg from '../../assets/newbg.jpg';
-import Corousel from './Corousel';
+import Carousel from './Carousel';
 
 const useStyles = makeStyles(() => ({
   banner: {
@@ -14,6 +14,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     paddingTop: 25,
     justifyContent: 'space-around',
+
   },
   bannerContent: {
     height: '100%',
@@ -46,7 +47,7 @@ const Banner = () => {
                 Keep track of your favorite cryptocurrencies
             </Typography>
         </div>
-        <Corousel/>
+        <Carousel/>
       </Container>
     </div>
   );
