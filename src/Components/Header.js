@@ -13,6 +13,38 @@ const useStyles = makeStyles(() => ({
     fontWeight: 'bold',
     cursor: 'pointer',
   },
+  select: {
+    '& .MuiSelect-select': {
+      color: 'gold', 
+      '&:hover': {  
+        '& .MuiSelect-select': 'gold',
+      }
+    },
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'gold',
+      '&:hover': {  
+        borderColor: 'gold',
+      } 
+    },
+    '&:hover .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'gold', 
+      
+    },
+    '& .MuiSvgIcon-root': {
+      color: 'gold', 
+    },
+  },
+  menuItem: {
+    color: 'gold',
+    '&:hover': {
+      backgroundColor: 'gold',
+      color: 'gold', 
+     
+    },
+    '&:focus': {
+      color: 'gold',
+    },
+  },
 }));
 
 const Header = () => {
@@ -24,7 +56,7 @@ const Header = () => {
       primary: {
         main: '#fff',
       },
-      mode: 'dark', 
+      mode: 'dark',
     },
   });
 
@@ -42,20 +74,23 @@ const Header = () => {
             >
               CRYPTO PORTFOLIO
             </Typography>
-            <Select variant='outlined' style={{
-              width: 100,
-              height: 40,
-              marginRight: 15,
-            }}
-            value={currency}
-            onChange={(e) => setCurrency(e.target.value)}
+            <Select
+              variant='outlined'
+              className={classes.select}
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+              style={{
+                width: 100,
+                height: 40,
+                marginRight: 15,
+              }}
             >
-              <MenuItem value={"USD"}>USD</MenuItem>
-              <MenuItem value={"EUR"}>EUR</MenuItem>
-              <MenuItem value={"JPY"}>JPY</MenuItem>
-              <MenuItem value={"GBP"}>GBP</MenuItem>
-              <MenuItem value={"AUD"}>AUD</MenuItem>
-              <MenuItem value={"INR"}>INR</MenuItem>
+              <MenuItem value={"USD"} className={classes.menuItem}>USD</MenuItem>
+              <MenuItem value={"EUR"} className={classes.menuItem}>EUR</MenuItem>
+              <MenuItem value={"JPY"} className={classes.menuItem}>JPY</MenuItem>
+              <MenuItem value={"GBP"} className={classes.menuItem}>GBP</MenuItem>
+              <MenuItem value={"AUD"} className={classes.menuItem}>AUD</MenuItem>
+              <MenuItem value={"INR"} className={classes.menuItem}>INR</MenuItem>
             </Select>
           </Toolbar>
         </Container>
