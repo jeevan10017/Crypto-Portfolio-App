@@ -37,6 +37,8 @@ const Carousel = () => {
       const { data } = await axios.get(TrendingCoins(currency), {
         headers: {
           // 'X-CMC_PRO_API_KEY': 'CG-DfW9hRAWBkJyrP2qHTLUBKiP',
+          'X-CMC_PRO_API_KEY': 'CG-DfW9hRAWBkJyrP2qHTLUBKiP',
+
         },
       });
       setTrending(data);

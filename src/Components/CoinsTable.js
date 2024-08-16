@@ -41,7 +41,7 @@ const CoinsTable = () => {
         try {
             const { data } = await axios.get(CoinsList(currency), {
                 headers: {
-                    // 'X-CMC_PRO_API_KEY': 'YOUR_API_KEY_HERE',
+                    // 'X-CMC_PRO_API_KEY': 'CG-DfW9hRAWBkJyrP2qHTLUBKiP',
                 },
             });
             setCoins(data);
