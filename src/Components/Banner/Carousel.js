@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
@@ -31,14 +30,13 @@ const Carousel = () => {
   const classes = useStyles();
   const [trending, setTrending] = useState([]);
   const { currency, symbol } = CryptoState();
+  const API_KEY = process.env.API_KEY;
 
   const fetchTrendingCoins = async () => {
     try {
       const { data } = await axios.get(TrendingCoins(currency), {
         headers: {
-          // 'X-CMC_PRO_API_KEY': 'CG-DfW9hRAWBkJyrP2qHTLUBKiP',
-          // 'X-CMC_PRO_API_KEY': 'CG-DfW9hRAWBkJyrP2qHTLUBKiP',
-
+          'X-CMC_PRO_API_KEY': API_KEY,
         },
       });
       setTrending(data);
@@ -51,7 +49,6 @@ const Carousel = () => {
   useEffect(() => {
     fetchTrendingCoins();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  
   }, [currency]);
 
   const items = trending.map((coin) => {
@@ -106,5 +103,3 @@ const Carousel = () => {
 };
 
 export default Carousel;
-
-
