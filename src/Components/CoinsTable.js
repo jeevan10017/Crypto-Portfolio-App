@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { CoinsList } from '../config/api';
-import axios from 'axios';
 import { CryptoState } from '../CryptoContext';
 import { useNavigate } from 'react-router-dom'; 
 import { numberWithCommas } from './Banner/Carousel';
@@ -28,28 +26,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 const CoinsTable = () => {
-    const [coins, setCoins] = useState([]);
-    const [loading, setLoading] = useState(false);
+
     const [search, setSearch] = useState("");
     const [page , setPage] = useState(1);
     const navigate = useNavigate(); 
 
-    const { currency, symbol } = CryptoState();
+    const { currency, symbol,coins,loading,fetchCoins } = CryptoState();
 
-    const fetchCoins = async () => {
-        setLoading(true);
-        try {
-            const { data } = await axios.get(CoinsList(currency), {
-                headers: {
-                    // 'X-CMC_PRO_API_KEY': 'CG-DfW9hRAWBkJyrP2qHTLUBKiP',
-                },
-            });
-            setCoins(data);
-        } catch (error) {
-            console.error("Error fetching coins:", error);
-        }
-        setLoading(false);
-    };
+   
 
     useEffect(() => {
         fetchCoins();

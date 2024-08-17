@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => ({
     backgroundImage: `url(${backgroundImg})`, 
     backgroundSize: 'cover', 
     backgroundPosition: 'center', 
-    height: 400, 
+    height: 450, 
     display: 'flex',
     flexDirection: 'column',
     paddingTop: 25,
@@ -22,6 +22,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     paddingTop: 25,
     justifyContent: 'space-around',
+    zIndex: 1,
     
   },
     tagline: {
@@ -29,8 +30,22 @@ const useStyles = makeStyles(() => ({
         height: '40%',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
-    }
+        alignItems: 'center',
+        zIndex: 1,
+    },
+    overlay: {
+      position: 'absolute',
+      top:"9%",
+      left: 0,
+      width: '100%',
+      height: "75%",
+      background: 'rgba(0, 0, 0, 0.3)', 
+      zIndex: 0, 
+      borderRadius: '10px',
+    },
+   new: {
+    zIndex: 100
+   }
 }));
 
 const Banner = () => {
@@ -38,12 +53,13 @@ const Banner = () => {
 
   return (
     <div className={classes.banner}>
+       <div className={classes.overlay} />
       <Container className={classes.bannerContent}>
         <div className={classes.tagline}>
-            <Typography variant='h4' style={{color: 'white', fontWeight: 'bold' ,marginBottom:"15" , fontFamily:"Montserrat"}}>
+            <Typography variant='h3' style={{color: 'white', fontWeight: 'bold' ,marginBottom:"15" , fontFamily:"Montserrat"}}>
                 Welcome to Crypto Portfolio
             </Typography>
-            <Typography variant='subtitle2' style={{color: 'white', fontFamily:"Montserrat"}}>
+            <Typography className={classes.new} variant='h6' style={{color: 'white', fontFamily:"Montserrat" }}>
                 Keep track of your favorite cryptocurrencies
             </Typography>
         </div>

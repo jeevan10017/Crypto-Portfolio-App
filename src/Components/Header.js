@@ -4,6 +4,8 @@ import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CryptoState } from '../CryptoContext';
+import AuthModal from './Authentication/AuthModal';
+import UserSidebar from './Authentication/UserSidebar';
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -20,16 +22,16 @@ const useStyles = makeStyles(() => ({
         '& .MuiSelect-select': 'gold',
       }
     },
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'gold',
-      '&:hover': {  
-        borderColor: 'gold',
-      } 
-    },
-    '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'gold', 
+    // '& .MuiOutlinedInput-notchedOutline': {
+    //   borderColor: 'gold',
+    //   '&:hover': {  
+    //     borderColor: 'gold',
+    //   } 
+    // },
+    // '&:hover .MuiOutlinedInput-notchedOutline': {
+    //   borderColor: 'gold', 
       
-    },
+    // },
     '& .MuiSvgIcon-root': {
       color: 'gold', 
     },
@@ -60,7 +62,7 @@ const Header = () => {
     },
   });
 
-  const { currency, setCurrency } = CryptoState();
+  const { currency, setCurrency,user } = CryptoState();
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -92,6 +94,7 @@ const Header = () => {
               <MenuItem value={"AUD"} className={classes.menuItem}>AUD</MenuItem>
               <MenuItem value={"INR"} className={classes.menuItem}>INR</MenuItem>
             </Select>
+             {user ? <UserSidebar/> : <AuthModal/>}
           </Toolbar>
         </Container>
       </AppBar>

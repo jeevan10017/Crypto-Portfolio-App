@@ -8,6 +8,17 @@ import { LinearProgress, Typography, Box } from '@mui/material';
 import parse from 'html-react-parser';
 import { numberWithCommas } from '../Components/Banner/Carousel';
 import CoinInfo from '../Components/CoinInfo'; 
+import Button from '@mui/material/Button';
+import { IoIosArrowBack } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
+
+
+
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
+
+
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -72,14 +83,27 @@ const useStyles = makeStyles((theme) => ({
   nsymbol: {
     color: 'gold', 
   },
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  [theme.breakpoints.down('md')]: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  [theme.breakpoints.down('xs')]: {
+    alignItems: 'start',
+  },
 
 }));
 
 const Coinpage = () => {
   const { id } = useParams();
   const [coin, setCoin] = useState();
+  const navigate = useNavigate();
 
-  const { currency, symbol } = CryptoState();
+  const { currency, symbol, user, watchlist, setAlert } = CryptoState(); 
 
   const fetchCoin = async () => {
     try {
@@ -94,12 +118,73 @@ const Coinpage = () => {
     fetchCoin();
   }, [currency]);
 
+  const isWatchlisted = watchlist.includes(coin?.id);
+
+  const addToWatchlist = async () => {
+    const coinRef = doc(db, 'watchlist', user.uid);
+
+    try {
+      await setDoc(coinRef, {
+        coins: watchlist ? [...watchlist, coin.id] : [coin.id],
+      });
+      setAlert({
+        open: true,
+        message: `${coin.name} added to watchlist!`,
+        severity: 'success',
+      });
+    } catch (error) {
+      console.error('Error adding to watchlist:', error);
+      setAlert({
+        open: true,
+        message: 'Error adding to watchlist!',
+        severity: 'error',
+      });
+    }
+  };
+
+  const removeFromWatchlist = async () => {
+    const coinRef = doc(db, 'watchlist', user.uid);
+
+    try {
+      await setDoc(
+        coinRef, 
+        {
+          coins: watchlist.filter((watch) => watch !== coin?.id),
+        },
+        { merge: true }
+      );
+      setAlert({
+        open: true,
+        message: `${coin.name} removed from watchlist!`, // Updated the message for removal
+        severity: 'success',
+      });
+    } catch (error) {
+      console.error('Error removing from watchlist:', error);
+      setAlert({
+        open: true,
+        message: 'Error removing from watchlist!',
+        severity: 'error',
+      });
+    }
+  };
+
   const classes = useStyles();
   if (!coin) return <LinearProgress style={{ backgroundColor: 'gold' }} />;
 
   return (
     <div className={classes.container}>
       <div className={classes.sidebar}>
+      <IoIosArrowBack 
+          onClick={() => navigate('/')}
+          style={{
+            position: 'absolute',
+            top: 20,
+            left: 20,
+            fontSize: '24px',
+            color: 'gold',
+            cursor: 'pointer',
+          }}
+        />
         <img
           src={coin?.image.large}
           alt={coin?.name}
@@ -107,8 +192,8 @@ const Coinpage = () => {
           style={{ marginBottom: 20 }}
         />
         <Typography variant="h4" className={classes.heading}>
-          {coin?.name} 
-          <span className={classes.nsymbol}>({coin?.symbol.toUpperCase()})</span>
+          <span className={classes.nsymbol}>{coin?.name} </span>
+          <span style={{ color: "gray" }}>({coin?.symbol.toUpperCase()})</span>
         </Typography>
         <Typography className={classes.description}>
           {parse(coin?.description.en.split('. ')[0])}.
@@ -147,6 +232,22 @@ const Coinpage = () => {
               M
             </Typography>
           </Box>
+          
+          {user && (
+            <Button
+              variant="outlined"
+              style={{
+                width: '100%',
+                height: 40,
+                marginTop: 20,
+                backgroundColor: isWatchlisted ? "#ed1806" : "rgb(253, 187, 45,100)",
+                color: isWatchlisted ? "black" : "black",
+              }}
+              onClick={isWatchlisted ? removeFromWatchlist : addToWatchlist}
+            >
+              {isWatchlisted ? "Remove from Watchlist" : "Add to Watchlist"} 
+            </Button>
+          )}
         </div>
       </div>
       <CoinInfo coin={coin} />

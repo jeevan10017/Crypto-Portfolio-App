@@ -6,6 +6,7 @@ import CoinPage from './Pages/CoinPage';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import Alert from './Components/Alert';
 
 const useStyles = makeStyles(() => ({
   App: {
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="/coins/:id" element={<CoinPage />} />
           </Routes>
         </div>
+        <Alert/>
       </BrowserRouter>
     </ThemeProvider>
   );
