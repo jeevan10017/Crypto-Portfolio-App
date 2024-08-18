@@ -6,6 +6,9 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CryptoState } from '../CryptoContext';
 import AuthModal from './Authentication/AuthModal';
 import UserSidebar from './Authentication/UserSidebar';
+import logo from '../assets/logo.jpg';
+import { AiOutlineFontSize } from 'react-icons/ai';
+import "../App.css";
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -14,6 +17,12 @@ const useStyles = makeStyles(() => ({
     fontFamily: 'Montserrat',
     fontWeight: 'bold',
     cursor: 'pointer',
+    position: 'sticky',
+    '@media (max-width: 468px)': {
+     
+      fontSize: '1.5rem',
+    },
+    
   },
   select: {
     '& .MuiSelect-select': {
@@ -36,6 +45,7 @@ const useStyles = makeStyles(() => ({
       color: 'gold', 
     },
   },
+
   menuItem: {
     color: 'gold',
     '&:hover': {
@@ -66,9 +76,15 @@ const Header = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <AppBar color='transparent' position="static">
-        <Container>
-          <Toolbar>
+      <AppBar  color='transparent' position="sticky" >
+        <Container className="HeaderCnt"style={{zIndex:100  ,width:"100%" }}>
+          <Toolbar >
+            <img
+              src={logo}
+              alt="logo"
+              style={{ width: 45, cursor: 'pointer', padding: 5 }}
+              onClick={() => navigate('/')}
+            />
             <Typography
               onClick={() => navigate("/")}
               className={classes.title}
@@ -82,8 +98,8 @@ const Header = () => {
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
               style={{
-                width: 100,
-                height: 40,
+                width: 75,
+                height: 35,
                 marginRight: 15,
               }}
             >
