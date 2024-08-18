@@ -1,8 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { Container, Typography } from '@mui/material';
+import { Button, Container, Typography } from '@mui/material';
 import backgroundImg from '../../assets/newbg.jpg';
 import Carousel from './Carousel';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   banner: {
@@ -35,10 +36,10 @@ const useStyles = makeStyles(() => ({
     },
     overlay: {
       position: 'absolute',
-      top:"9%",
+      top:"8.8%",
       left: 0,
       width: '100%',
-      height: "75%",
+      height: "77%",
       background: 'rgba(0, 0, 0, 0.3)', 
       zIndex: 0, 
       borderRadius: '10px',
@@ -50,6 +51,7 @@ const useStyles = makeStyles(() => ({
 
 const Banner = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   return (
     <div className={classes.banner}>
@@ -62,6 +64,9 @@ const Banner = () => {
             <Typography className={classes.new} variant='h6' style={{color: 'white', fontFamily:"Montserrat" }}>
                 Keep track of your favorite cryptocurrencies
             </Typography>
+            <Button variant='contained'onClick={() => navigate("/tokens")} style={{backgroundColor: '#EEBC1D', color: 'black', marginTop: 25 , }}>
+                manage Tokens
+            </Button>
         </div>
         <Carousel/>
       </Container>

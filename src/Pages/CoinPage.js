@@ -9,7 +9,7 @@ import parse from 'html-react-parser';
 import { numberWithCommas } from '../Components/Banner/Carousel';
 import CoinInfo from '../Components/CoinInfo'; 
 import Button from '@mui/material/Button';
-import { IoIosArrowBack } from 'react-icons/io';
+import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 
 
@@ -173,8 +173,9 @@ const Coinpage = () => {
 
   return (
     <div className={classes.container}>
+      
       <div className={classes.sidebar}>
-      <IoIosArrowBack 
+      <FaArrowLeft
           onClick={() => navigate('/')}
           style={{
             position: 'absolute',
@@ -241,7 +242,7 @@ const Coinpage = () => {
                 height: 40,
                 marginTop: 20,
                 backgroundColor: isWatchlisted ? "#ed1806" : "rgb(253, 187, 45,100)",
-                color: isWatchlisted ? "black" : "black",
+                color: isWatchlisted ? "white" : "black",
               }}
               onClick={isWatchlisted ? removeFromWatchlist : addToWatchlist}
             >

@@ -3,8 +3,7 @@ import axios from 'axios';
 import { CoinsList } from './config/api';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from './firebase';
-import { doc, onSnapshot } from 'firebase/firestore';
-
+import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 
 const Crypto = createContext();
 
@@ -13,6 +12,7 @@ const CryptoContext = ({ children }) => {
     const [symbol, setSymbol] = useState('₹');
     const [coins, setCoins] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [transferHistory, setTransferHistory] = useState([]);
     const [user, setUser] = useState(null);
     const [alert, setAlert] = useState({
         open: false,
@@ -34,7 +34,6 @@ const CryptoContext = ({ children }) => {
             })
             return () => unsubscribe();
         }
-
     }, [user]);
 
     useEffect(() => {
@@ -60,6 +59,24 @@ const CryptoContext = ({ children }) => {
         setLoading(false);
     };
 
+    useEffect(() => {
+        if (user) {
+            const historyRef = doc(db, 'transferHistory', user.uid);
+            const unsubscribe = onSnapshot(historyRef, doc => {
+                if (doc.exists()) {
+                    setTransferHistory(doc.data().history || []);
+                }
+            });
+            return () => unsubscribe();
+        }
+    }, [user]);
+
+    const addToTransferHistory = async (transaction) => {
+        if (!user) return;
+        const historyRef = doc(db, 'transferHistory', user.uid);
+        const newHistory = [...transferHistory, transaction];
+        await setDoc(historyRef, { history: newHistory }, { merge: true });
+    };
 
     useEffect(() => {
         if (currency === 'USD') setSymbol('$');
@@ -71,7 +88,8 @@ const CryptoContext = ({ children }) => {
     }, [currency]);
 
     return (
-        <Crypto.Provider value={{ currency, symbol, setCurrency, coins, loading, fetchCoins, alert, setAlert, user, watchlist }}>
+        <Crypto.Provider value={{ currency, symbol, setCurrency, coins, loading, fetchCoins, alert, setAlert, user, watchlist ,transferHistory,
+            addToTransferHistory, }}>
             {children}
         </Crypto.Provider>
     );

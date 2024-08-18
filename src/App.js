@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './Components/Header';
 import Homepage from './Pages/Homepage';
 import CoinPage from './Pages/CoinPage';
+import TokenPage from './Pages/TokenPage';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -19,6 +20,9 @@ const useStyles = makeStyles(() => ({
 const theme = createTheme({
   palette: {
     mode: 'dark',
+    primary: {
+      main: '#ffd700',
+    },
   },
 });
 
@@ -34,6 +38,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/coins/:id" element={<CoinPage />} />
+            <Route path="/tokens" element={<TokenPage />} />
           </Routes>
         </div>
         <Alert/>
