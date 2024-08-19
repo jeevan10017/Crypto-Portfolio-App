@@ -17,10 +17,10 @@ const useStyles = makeStyles(() => ({
     },
     pagination: {
         "& .MuiPaginationItem-root": {
-            color: "gold",
+            color: "#CFB53B",
         },
         "& .MuiPaginationItem-page.Mui-selected": {
-            backgroundColor: "gold",
+            backgroundColor: "#CFB53B",
         },
     }
 }));
@@ -60,7 +60,7 @@ const CoinsTable = () => {
 
     return (
         <ThemeProvider theme={darkTheme}>
-            <Container style={{ textAlign: "center" ,marginTop:"5%"}}>
+            <Container style={{ textAlign: "center" ,marginTop:"5%" , zIndex:10}}>
                 <Typography
                     variant='h4'
                     style={{ margin: 18, fontFamily: "Montserrat" }}
@@ -75,10 +75,10 @@ const CoinsTable = () => {
                 />
                 <TableContainer>
                     {loading ? (
-                        <LinearProgress style={{ backgroundColor: "gold" }} />
+                        <LinearProgress style={{ backgroundColor: "#CFB53B" }} />
                     ) : (
                         <Table>
-                            <TableHead style={{ backgroundColor: "#EEBC1D" }}>
+                            <TableHead style={{ backgroundColor: "#CFB53B" }}>
                                 <TableRow>
                                     {["Coin", "Price", "24hr Change", "MarketCap"].map((head) => (
                                         <TableCell

@@ -11,6 +11,7 @@ import CoinInfo from '../Components/CoinInfo';
 import Button from '@mui/material/Button';
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import AuthModal from '../Components/Authentication/AuthModal';
 
 
 
@@ -80,8 +81,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 10,
     color: '#f5f5f5', 
   },
+  button: {
+    '&:hover': {
+      backgroundColor: '#CFB53B',
+      color: 'black',
+    },
+  },
   nsymbol: {
-    color: 'gold', 
+    color: '#CFB53B', 
   },
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column',
@@ -155,7 +162,7 @@ const Coinpage = () => {
       );
       setAlert({
         open: true,
-        message: `${coin.name} removed from watchlist!`, // Updated the message for removal
+        message: `${coin.name} removed from watchlist!`, 
         severity: 'success',
       });
     } catch (error) {
@@ -167,9 +174,13 @@ const Coinpage = () => {
       });
     }
   };
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
 
   const classes = useStyles();
-  if (!coin) return <LinearProgress style={{ backgroundColor: 'gold' }} />;
+  if (!coin) return <LinearProgress style={{ backgroundColor: '#CFB53B' }} />;
 
   return (
     <div className={classes.container}>
@@ -179,11 +190,12 @@ const Coinpage = () => {
           onClick={() => navigate('/')}
           style={{
             position: 'absolute',
-            top: 20,
-            left: 20,
+            top: 100,
+            left: 30,
             fontSize: '24px',
-            color: 'gold',
+            color: '#CFB53B',
             cursor: 'pointer',
+            zIndex:10,
           }}
         />
         <img
@@ -233,6 +245,34 @@ const Coinpage = () => {
               M
             </Typography>
           </Box>
+          <Box className={classes.marketDataItem}>
+            <Typography variant="h5" className={classes.heading}>
+              24h Change:
+            </Typography>
+            <Typography
+              variant="h5"
+              className={classes.nsymbol}
+              style={{
+                color: coin?.market_data.price_change_percentage_24h > 0 ? 'green' : 'red',
+              }}
+            >
+              {coin?.market_data.price_change_percentage_24h.toFixed(2)}%
+            </Typography>
+          </Box>
+        </div>
+        <div style={{ width: '100%', marginTop: 20 }}>
+        <div style={{display:"flex" , alignItems:"center" , justifyContent:"center"}}>
+          {!user && (
+              <Button 
+              className={classes.button}
+                variant="outlined" 
+                style={{ color: '#CFB53B', borderColor: '#CFB53B' }} 
+                onClick={handleOpen}
+              >
+                Login / Sign Up for wallet and Token management
+              </Button>
+            )}
+            </div>
           
           {user && (
             <Button
@@ -241,7 +281,7 @@ const Coinpage = () => {
                 width: '100%',
                 height: 40,
                 marginTop: 20,
-                backgroundColor: isWatchlisted ? "#ed1806" : "rgb(253, 187, 45,100)",
+                backgroundColor: isWatchlisted ? "#ed1806" : "#CFB53B",
                 color: isWatchlisted ? "white" : "black",
               }}
               onClick={isWatchlisted ? removeFromWatchlist : addToWatchlist}
@@ -249,9 +289,22 @@ const Coinpage = () => {
               {isWatchlisted ? "Remove from Watchlist" : "Add to Watchlist"} 
             </Button>
           )}
+          {user && (
+            <Button
+            variant='contained'
+            color='secondary'
+            onClick={() => navigate("/tokens")}
+            style={{  marginTop: 25, marginBottom: 8, width: '100%',
+                height: 40,
+                marginTop: 20, }}
+          >
+            Manage Tokens
+          </Button>
+          )}
         </div>
       </div>
       <CoinInfo coin={coin} />
+      <AuthModal triggerOpen={openModal} handleClose={handleClose} />
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import React from 'react';
-import { AppBar, Container, Toolbar, Typography, Select, MenuItem } from '@mui/material';
+import React, { useState } from 'react';
+import { AppBar, Container, Toolbar, Typography, Select, MenuItem, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles'; 
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -7,61 +7,68 @@ import { CryptoState } from '../CryptoContext';
 import AuthModal from './Authentication/AuthModal';
 import UserSidebar from './Authentication/UserSidebar';
 import logo from '../assets/logo.jpg';
-import { AiOutlineFontSize } from 'react-icons/ai';
 import "../App.css";
 
 const useStyles = makeStyles(() => ({
   title: {
     flex: 1,
-    color: 'gold',
+    color: '#CFB53B',
     fontFamily: 'Montserrat',
-    fontWeight: 'bold',
+    fontWeight: 'extraBold',
     cursor: 'pointer',
-    position: 'sticky',
+     fontSize: '1.4rem'
+,    position: 'sticky',
     '@media (max-width: 468px)': {
-     
-      fontSize: '1.5rem',
+      fontSize: '1.1rem',
     },
-    
+    '@media (max-width: 478px)': {
+      // display: "none",
+      opacity: 0,
+      fontSize: '3px',
+    },
   },
   select: {
     '& .MuiSelect-select': {
-      color: 'gold', 
-      '&:hover': {  
-        '& .MuiSelect-select': 'gold',
+      color: '#CFB53B',
+      '&:hover': {
+        '& .MuiSelect-select': '#CFB53B',
       }
     },
-    // '& .MuiOutlinedInput-notchedOutline': {
-    //   borderColor: 'gold',
-    //   '&:hover': {  
-    //     borderColor: 'gold',
-    //   } 
-    // },
-    // '&:hover .MuiOutlinedInput-notchedOutline': {
-    //   borderColor: 'gold', 
-      
-    // },
     '& .MuiSvgIcon-root': {
-      color: 'gold', 
+      color: '#CFB53B',
     },
   },
-
   menuItem: {
-    color: 'gold',
+    color: '#CFB53B',
+    // marginLeft: "20px",
     '&:hover': {
-      backgroundColor: 'gold',
-      color: 'gold', 
-     
+      backgroundColor: '#CFB53B',
+      color: '#CFB53B',
     },
     '&:focus': {
-      color: 'gold',
+      color: '#CFB53B',
     },
   },
+  bar: {
+    zIndex: 100,
+    backgroundColor: 'black',
+    width: '100%',
+  },
+  btn:{
+    color: '#CFB53B',
+    borderColor: '#CFB53B',
+  }
 }));
 
 const Header = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { currency, setCurrency, user } = CryptoState();
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
 
   const darkTheme = createTheme({
     palette: {
@@ -72,22 +79,21 @@ const Header = () => {
     },
   });
 
-  const { currency, setCurrency,user } = CryptoState();
-
   return (
     <ThemeProvider theme={darkTheme}>
-      <AppBar  color='transparent' position="sticky" >
-        <Container className="HeaderCnt"style={{zIndex:100  ,width:"100%" }}>
-          <Toolbar >
+      <AppBar className={classes.bar} position="sticky" style={{ backgroundColor: 'black', width: "100%", zIndex: "100" }}>
+        <Container className="HeaderCnt" style={{ maxwidth: "100%" }}>
+          <Toolbar>
             <img
               src={logo}
               alt="logo"
-              style={{ width: 45, cursor: 'pointer', padding: 5 }}
+              style={{ width: 50, cursor: 'pointer', padding: 5 }}
               onClick={() => navigate('/')}
             />
             <Typography
               onClick={() => navigate("/")}
               className={classes.title}
+              style={{ marginLeft: 10,fontFamily: 'Montserrat', fontWeight: 'extraBold' }}
               variant="h6"
             >
               CRYPTO PORTFOLIO
@@ -100,7 +106,8 @@ const Header = () => {
               style={{
                 width: 75,
                 height: 35,
-                marginRight: 15,
+                // marginLeft: 145,
+                
               }}
             >
               <MenuItem value={"USD"} className={classes.menuItem}>USD</MenuItem>
@@ -110,10 +117,22 @@ const Header = () => {
               <MenuItem value={"AUD"} className={classes.menuItem}>AUD</MenuItem>
               <MenuItem value={"INR"} className={classes.menuItem}>INR</MenuItem>
             </Select>
-             {user ? <UserSidebar/> : <AuthModal/>}
+            {user ? (
+              <UserSidebar />
+            ) : (
+              <Button 
+                variant="outlined" 
+                className={classes.btn}
+                style={{ color: '#CFB53B', borderColor: '#CFB53B',marginLeft: 20 }} 
+                onClick={handleOpen}
+              >
+                Login
+              </Button>
+            )}
           </Toolbar>
         </Container>
       </AppBar>
+      <AuthModal triggerOpen={openModal} handleClose={handleClose} />
     </ThemeProvider>
   );
 };

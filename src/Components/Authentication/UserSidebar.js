@@ -19,7 +19,7 @@
 //       flexDirection: "column",
 //       fontFamily: "monospace",
 //       backgroundColor: "#121212", 
-//       color: "#FFD700",            
+//       color: "#CFB53B",            
 //     },
 //     profile: {
 //       flex: 1,
@@ -28,12 +28,12 @@
 //       alignItems: "center",
 //       gap: "20px",
 //       height: "92%",
-//       color: "#FFD700",  
+//       color: "#CFB53B",  
 //     },
 //     logout: {
 //       height: "8%",
 //       width: "100%",
-//       backgroundColor: "#FFD700", 
+//       backgroundColor: "#CFB53B", 
 //       color: "#121212",           
 //       marginTop: 20,
 //     },
@@ -41,7 +41,7 @@
 //       width: 200,
 //       height: 200,
 //       cursor: "pointer",
-//       backgroundColor: "#FFD700", 
+//       backgroundColor: "#CFB53B", 
 //       objectFit: "contain",
 //     },
 //     watchlist: {
@@ -68,8 +68,8 @@
 //       display: "flex",
 //       justifyContent: "space-between",
 //       alignItems: "center",
-//       backgroundColor: "#FFD700",  
-//       boxShadow: "0 0 3px #FFD700", 
+//       backgroundColor: "#CFB53B",  
+//       boxShadow: "0 0 3px #CFB53B", 
 //     },
 //   });
 
@@ -183,7 +183,7 @@
 //                                 color="primary"
 //                                 onClick={() => setModalOpen(true)}
 //                                 style={{
-//                                     backgroundColor: "#FFD700", // Button color
+//                                     backgroundColor: "#CFB53B", // Button color
 //                                     color: "#121212",           // Text color
 //                                     marginTop: "20px",          // Space above the button
 //                                 }}
@@ -304,7 +304,7 @@ const useStyles = makeStyles({
       flexDirection: "column",
       fontFamily: "monospace",
       backgroundColor: "#121212", 
-      color: "#FFD700",            
+      color: "#CFB53B",            
     },
     profile: {
       flex: 1,
@@ -313,13 +313,13 @@ const useStyles = makeStyles({
       alignItems: "center",
       gap: "15px",
       height: "100%",
-      color: "#FFD700", 
+      color: "#CFB53B", 
 
     },
     logout: {
       height: "8%",
       width: "100%",
-      backgroundColor: "#FFD700", 
+      backgroundColor: "#CFB53B", 
       color: "#121212",           
       marginTop: 20,
     },
@@ -327,7 +327,7 @@ const useStyles = makeStyles({
       width: 200,
       height: 200,
       cursor: "pointer",
-      backgroundColor: "#FFD700", 
+      backgroundColor: "#CFB53B", 
       objectFit: "contain",
     },
     watchlist: {
@@ -354,8 +354,8 @@ const useStyles = makeStyles({
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      backgroundColor: "#FFD700",  
-      boxShadow: "0 0 3px #FFD700", 
+      backgroundColor: "#CFB53B",  
+      boxShadow: "0 0 3px #CFB53B", 
     },
   });
 
@@ -459,7 +459,7 @@ export default function UserSidebar() {
                   className={classes.picture}
                   src={user.photoURL}
                   alt={user.displayName || user.email}
-                  style={{cursor: "pointer", scale: 1.5 , marginTop: 10 , marginBottom: 10 , borderRadius: 50, boxShadow: "0 0 3px #FFD700" , backgroundColor: "#FFD700", objectFit: "contain", width: 80, height: 80}}
+                  style={{cursor: "pointer", scale: 1.5 , marginTop: 10 , marginBottom: 10 , borderRadius: 50, boxShadow: "0 0 3px #CFB53B" , backgroundColor: "#CFB53B", objectFit: "contain", width: 80, height: 80}}
                 />
                 <span
                   style={{
@@ -501,7 +501,7 @@ export default function UserSidebar() {
           backgroundColor: '#1E1E1E', // Dark background color
           padding: 4,
           borderRadius: 2,
-          color: '#FFD700',
+          color: '#CFB53B',
           overflow: 'auto' // Allows scrolling if content overflows
         }}
       >
@@ -509,18 +509,18 @@ export default function UserSidebar() {
           variant="h6"
           gutterBottom
           id="modal-title"
-          style={{ color: '#FFD700' }}
+          style={{ color: '#CFB53B' }}
         >
           Transfer History
         </Typography>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell style={{ color: '#FFD700' }}>Date</TableCell>
-              <TableCell style={{ color: '#FFD700' }}>Token Address</TableCell>
-              <TableCell style={{ color: '#FFD700' }}>Recipient</TableCell>
-              <TableCell style={{ color: '#FFD700' }}>Amount</TableCell>
-              <TableCell style={{ color: '#FFD700' }}>Transaction Hash</TableCell>
+              <TableCell style={{ color: '#CFB53B' }}>Date</TableCell>
+              <TableCell style={{ color: '#CFB53B' }}>Token Address</TableCell>
+              <TableCell style={{ color: '#CFB53B' }}>Recipient</TableCell>
+              <TableCell style={{ color: '#CFB53B' }}>Amount</TableCell>
+              <TableCell style={{ color: '#CFB53B' }}>Transaction Hash</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -535,7 +535,7 @@ export default function UserSidebar() {
                     href={`https://etherscan.io/tx/${history.transactionHash}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: '#FFD700' }}
+                    style={{ color: '#CFB53B' }}
                   >
                     View on Etherscan
                   </a>

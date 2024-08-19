@@ -1,11 +1,11 @@
+import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import Modal from "@mui/material/Modal";
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
-import { Button, Tab, Tabs, AppBar, Box } from "@mui/material";
+import { Tab, Tabs, AppBar, Box } from "@mui/material";
 import Signup from "./Signup";
 import Login from "./Login";
-import { useState } from "react";
 import { CryptoState } from "../../CryptoContext";
 import { auth } from "../../firebase";
 import GoogleButton from "react-google-button";
@@ -34,21 +34,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AuthModal() {
+export default function AuthModal({ triggerOpen, handleClose }) {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-
-  const { setAlert } = CryptoState();
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const [value, setValue] = useState(0);
+  const { setAlert } = CryptoState();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -64,7 +53,6 @@ export default function AuthModal() {
           message: `Sign Up Successful. Welcome ${res.user.email}`,
           type: "success",
         });
-
         handleClose();
       })
       .catch((error) => {
@@ -73,67 +61,52 @@ export default function AuthModal() {
           message: error.message,
           type: "error",
         });
-        return;
       });
   };
 
   return (
-    <div>
-      <Button
-        variant="contained"
-        style={{
-          width: 85,
-          height: 40,
-          marginLeft: 15,
-          backgroundColor: "#EEBC1D",
-        }}
-        onClick={handleOpen}
-      >
-        Login
-      </Button>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <AppBar
-              position="static"
-              style={{
-                backgroundColor: "transparent",
-                color: "white",
-              }}
+    <Modal
+      aria-labelledby="transition-modal-title"
+      aria-describedby="transition-modal-description"
+      className={classes.modal}
+      open={triggerOpen}
+      onClose={handleClose}
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        timeout: 500,
+      }}
+    >
+      <Fade in={triggerOpen}>
+        <div className={classes.paper}>
+          <AppBar
+            position="static"
+            style={{
+              backgroundColor: "transparent",
+              color: "white",
+            }}
+          >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              variant="fullWidth"
+              style={{ borderRadius: 10 }}
             >
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                variant="fullWidth"
-                style={{ borderRadius: 10 }}
-              >
-                <Tab label="Login" />
-                <Tab label="Sign Up" />
-              </Tabs>
-            </AppBar>
-            {value === 0 && <Login handleClose={handleClose} />}
-            {value === 1 && <Signup handleClose={handleClose} />}
-            <Box className={classes.google}>
-              <span>OR</span>
-              <GoogleButton
-                style={{ width: "100%", outline: "none",cursor: "pointer",zIndex: 10 }}
-                onClick={signInWithGoogle}
-              />
-            </Box>
-          </div>
-        </Fade>
-      </Modal>
-    </div>
+              <Tab label="Login" />
+              <Tab label="Sign Up" />
+            </Tabs>
+          </AppBar>
+          {value === 0 && <Login handleClose={handleClose} />}
+          {value === 1 && <Signup handleClose={handleClose} />}
+          <Box className={classes.google}>
+            <span>OR</span>
+            <GoogleButton
+              style={{ width: "100%", outline: "none", cursor: "pointer", zIndex: 10 }}
+              onClick={signInWithGoogle}
+            />
+          </Box>
+        </div>
+      </Fade>
+    </Modal>
   );
 }

@@ -1,33 +1,22 @@
 import React from 'react';
-import { makeStyles } from '@mui/styles';
+import { Button } from '@mui/material';
 
-const useStyles = makeStyles({
-  selectButton: {
-    border: '1px solid gold',
-    borderRadius: 5,
-    padding: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    fontFamily: 'Montserrat',
-    cursor: 'pointer',
-    backgroundColor: (props) => (props.active ? 'gold' : 'transparent'),
-    color: (props) => (props.active ? 'black' : 'inherit'),
-    fontWeight: (props) => (props.active ? 700 : 500),
-    '&:hover': {
-      backgroundColor: 'gold',
-      color: 'black',
-    },
-    width: '22%',
-  },
-});
-
-const SelectButton = ({ children, id, active, onClick }) => {
-  const classes = useStyles({ active });
-
+const SelectButton = ({ children, selected, onClick }) => {
   return (
-    <span id={id} onClick={onClick} className={classes.selectButton}>
+    <Button
+      onClick={onClick}
+      variant="contained"
+      style={{
+        backgroundColor: selected ? '#EEBC1D' : 'transparent',
+        color: selected ? 'black' : '#EEBC1D',
+        border: '1px solid #EEBC1D',
+        fontWeight: selected ? 600 : 500,
+        width: '22%',
+        margin: 5,
+      }}
+    >
       {children}
-    </span>
+    </Button>
   );
 };
 

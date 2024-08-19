@@ -4,6 +4,17 @@ import { Button, TextField, Typography, Container ,Box } from '@mui/material';
 import { CryptoState } from '../CryptoContext';
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
+
+
+const useStyles = makeStyles(() => ({
+    container: {
+       margin:"( 100% - 20px)",
+    },
+
+
+  
+  }));
 
 const TokenPage = () => {
     const { user, addToTransferHistory } = CryptoState();
@@ -18,8 +29,14 @@ const TokenPage = () => {
     const [spenderAddress, setSpenderAddress] = useState('');
     const navigate = useNavigate();
 
+    
+
+
+    const classes = useStyles();
     // Connect to wallet
+
     const connectWallet = async () => {
+        
         try {
             if (window.ethereum) {
                 const web3Provider = new ethers.BrowserProvider(window.ethereum);
@@ -110,7 +127,7 @@ const TokenPage = () => {
     };
 
     return (
-        <Container maxWidth="sm" style={{ marginTop:"50px",marginBottom:"50px", border:"1px solid #FFD700" ,borderRadius:"30px" , boxShadow: "0px 1px 10px #FFD700"}}>
+        <Container className={classes.container}    maxWidth="sm" style={{ marginTop:"50px",marginBottom:"50px", border:"1px solid #CFB53B" ,borderRadius:"30px" , boxShadow: "0px 1px 10px #CFB53B"}}>
             <FaArrowLeft 
           onClick={() => navigate('/')}
           style={{
@@ -118,7 +135,7 @@ const TokenPage = () => {
             top: 20,
             left: -0,
             fontSize: '24px',
-            color: 'gold',
+            color: '#CFB53B',
             cursor: 'pointer',
           }}
         /> 
@@ -126,9 +143,17 @@ const TokenPage = () => {
            
                 <Typography variant="h4"  gutterBottom>Token Management</Typography>
 
-                <Button variant="contained" color="primary" onClick={connectWallet}>
-                    Connect Wallet
-                </Button>
+                {user && (
+                    <Button variant="contained" color="primary" onClick={connectWallet}>
+                        Connect Wallet
+                    </Button>
+                ) }
+                {!user &&
+                    <Typography variant="body1" color="error">
+                        Please log in to connect your account.
+                    </Typography>
+                }
+                
                 {walletAddress && (
                     <Typography variant="body1" gutterBottom>
                         Connected Address: {walletAddress}

@@ -17,6 +17,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -51,26 +52,44 @@ const CoinInfo = ({ coin }) => {
   const [flag, setFlag] = useState(false);
   const [percentageChange, setPercentageChange] = useState(0);
   const [color, setColor] = useState('#EEBC1D');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { currency } = CryptoState();
   const classes = useStyles();
 
   const fetchHistoricalData = async () => {
-    const { data } = await axios.get(HistoricalChart(coin.id, days, currency));
-    setFlag(true);
-    setHistoricalData(data.prices);
+    try {
+      const { data } = await axios.get(HistoricalChart(coin.id, days, currency));
+      setFlag(true);
+      setHistoricalData(data.prices);
 
-    // Calculate percentage change
-    const startPrice = data.prices[0][1];
-    const endPrice = data.prices[data.prices.length - 1][1];
-    const change = ((endPrice - startPrice) / startPrice) * 100;
+      // Calculate percentage change
+      const startPrice = data.prices[0][1];
+      const endPrice = data.prices[data.prices.length - 1][1];
+      const change = ((endPrice - startPrice) / startPrice) * 100;
 
-    setPercentageChange(change.toFixed(2));
+      setPercentageChange(change.toFixed(2));
 
-    if (change > 0) {
-      setColor('green');
-    } else {
-      setColor('red');
+      if (change > 0) {
+        setColor('green');
+      } else {
+        setColor('red');
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("API responded with an error:", error.response.data);
+      } else if (error.request) {
+        console.error("API request was made but no response received:", error.request);
+      } else {
+        console.error("Error setting up API request:", error.message);
+      }
+
+      
+      if (error.message === 'Network Error' || error.response?.status === 429) {
+        setFlag(false); 
+        setHistoricalData(null); 
+        setErrorMessage("Free API limit is completed, come back in 30 seconds or wait for 30 seconds.");
+      }
     }
   };
 
@@ -90,8 +109,12 @@ const CoinInfo = ({ coin }) => {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className={classes.container}>
-        {!historicalData || flag === false ? (
-          <CircularProgress style={{ color: 'gold' }} size={250} thickness={1} />
+        {!historicalData && flag === false && errorMessage ? (
+          <Typography variant="h6" style={{ color: 'red', marginBottom: 20, textAlign: 'center' }}>
+            {errorMessage}
+          </Typography>
+        ) : !historicalData || flag === false ? (
+          <CircularProgress style={{ color: '#CFB53B' }} size={250} thickness={1} />
         ) : (
           <>
             <Typography variant="h5" style={{ color, marginBottom: 20 }}>
@@ -112,6 +135,20 @@ const CoinInfo = ({ coin }) => {
                     data: historicalData.map((coin) => coin[1]),
                     label: `Price ( Past ${days} Days ) in ${currency}`,
                     borderColor: color,
+                    backgroundColor: (context) => {
+                      const chart = context.chart;
+                      const { ctx, chartArea } = chart;
+
+                      if (!chartArea) {
+                        return;
+                      }
+
+                      const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                      gradient.addColorStop(0, color === 'green' ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)');
+                      gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                      return gradient;
+                    },
+                    fill: true,
                   },
                 ],
               }}
@@ -152,4 +189,3 @@ const CoinInfo = ({ coin }) => {
 };
 
 export default CoinInfo;
-
