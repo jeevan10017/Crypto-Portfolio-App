@@ -139,8 +139,8 @@ const CoinInfo = ({ coin }) => {
                       }
 
                       const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                      gradient.addColorStop(0, color === 'green' ? 'rgba(0, 255, 0, 0.8)' : 'rgba(255, 0, 0, 0.8)');
-                      gradient.addColorStop(1, 'rgba(0, 0, 0, 0.7)');
+                      gradient.addColorStop(0, color === 'green' ? 'rgba(0, 255, 0, 0.2)' : 'rgba(255, 0, 0, 0.2)');
+                      gradient.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
                       return gradient;
                     },
                     fill: true,
