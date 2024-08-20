@@ -16,6 +16,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler,
 } from 'chart.js';
 
 ChartJS.register(
@@ -25,7 +26,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler 
 );
 
 const useStyles = makeStyles((theme) => ({
@@ -62,19 +64,13 @@ const CoinInfo = ({ coin }) => {
       const { data } = await axios.get(HistoricalChart(coin.id, days, currency));
       setFlag(true);
       setHistoricalData(data.prices);
-
-      // Calculate percentage change
       const startPrice = data.prices[0][1];
       const endPrice = data.prices[data.prices.length - 1][1];
       const change = ((endPrice - startPrice) / startPrice) * 100;
 
       setPercentageChange(change.toFixed(2));
 
-      if (change > 0) {
-        setColor('green');
-      } else {
-        setColor('red');
-      }
+      setColor(change > 0 ? 'green' : 'red');
     } catch (error) {
       if (error.response) {
         console.error("API responded with an error:", error.response.data);
@@ -84,11 +80,10 @@ const CoinInfo = ({ coin }) => {
         console.error("Error setting up API request:", error.message);
       }
 
-      
       if (error.message === 'Network Error' || error.response?.status === 429) {
         setFlag(false); 
         setHistoricalData(null); 
-        setErrorMessage("Free API limit is completed, come back in 30 seconds or wait for 30 seconds.");
+        setErrorMessage("Free API limit is exceeded, come back in 30 seconds or wait for 30 seconds.");
       }
     }
   };
@@ -140,12 +135,12 @@ const CoinInfo = ({ coin }) => {
                       const { ctx, chartArea } = chart;
 
                       if (!chartArea) {
-                        return;
+                        return null;
                       }
 
                       const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                      gradient.addColorStop(0, color === 'green' ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)');
-                      gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                      gradient.addColorStop(0, color === 'green' ? 'rgba(0, 255, 0, 0.8)' : 'rgba(255, 0, 0, 0.8)');
+                      gradient.addColorStop(1, 'rgba(0, 0, 0, 0.7)');
                       return gradient;
                     },
                     fill: true,
@@ -158,6 +153,7 @@ const CoinInfo = ({ coin }) => {
                     radius: 1,
                   },
                 },
+               
               }}
             />
             <div

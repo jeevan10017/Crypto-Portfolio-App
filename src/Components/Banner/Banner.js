@@ -51,10 +51,13 @@ const useStyles = makeStyles(() => ({
     zIndex: 0,
     borderRadius: '10px',
     '@media (max-width: 868px)': {
-      height: '80%', 
+      height: '85vh', 
     },
     '@media (max-width: 470px)': {
-      height: '94%', 
+      height: '90%', 
+    },
+    '@media (max-width: 435px)': {
+      height: '80%', 
     },
   },
   new: {

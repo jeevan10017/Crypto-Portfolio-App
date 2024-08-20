@@ -14,6 +14,7 @@ const CryptoContext = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [transferHistory, setTransferHistory] = useState([]);
     const [user, setUser] = useState(null);
+    const [error, setError] = useState(null); 
     const [alert, setAlert] = useState({
         open: false,
         message: '',
@@ -51,14 +52,14 @@ const CryptoContext = ({ children }) => {
     const fetchCoins = async () => {
         setLoading(true);
         try {
-            const { data } = await axios.get(CoinsList(currency));
+            const { data } = await axios.get(CoinsList(currency)); 
             setCoins(data);
+            setError(null);  
         } catch (error) {
-            console.error("Error fetching coins:", error);
+            setError('Network Error. Please try again later.');
         }
         setLoading(false);
     };
-
     useEffect(() => {
         if (user) {
             const historyRef = doc(db, 'transferHistory', user.uid);
@@ -89,7 +90,7 @@ const CryptoContext = ({ children }) => {
 
     return (
         <Crypto.Provider value={{ currency, symbol, setCurrency, coins, loading, fetchCoins, alert, setAlert, user, watchlist ,transferHistory,
-            addToTransferHistory, }}>
+            addToTransferHistory,error }}>
             {children}
         </Crypto.Provider>
     );

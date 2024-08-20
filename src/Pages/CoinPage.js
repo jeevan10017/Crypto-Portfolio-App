@@ -12,14 +12,8 @@ import Button from '@mui/material/Button';
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import AuthModal from '../Components/Authentication/AuthModal';
-
-
-
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
-
-
-
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -108,6 +102,7 @@ const useStyles = makeStyles((theme) => ({
 const Coinpage = () => {
   const { id } = useParams();
   const [coin, setCoin] = useState();
+  const [errorMessage, setErrorMessage] = useState(''); // State for error message
   const navigate = useNavigate();
 
   const { currency, symbol, user, watchlist, setAlert } = CryptoState(); 
@@ -116,8 +111,18 @@ const Coinpage = () => {
     try {
       const { data } = await axios.get(SingleCoin(id));
       setCoin(data);
+      setErrorMessage(''); 
     } catch (error) {
       console.error('Error fetching coin:', error);
+      let message = 'An unknown error occurred.';
+      if (error.response) {
+        message = `API Error: ${error.response.status} ${error.response.statusText}`;
+      } else if (error.request) {
+        message = "Free API limit is exceeded, come back in 30 seconds or wait for 30 seconds.";
+      } else {
+        message = `Error: ${error.message}`;
+      }
+      setErrorMessage(message); 
     }
   };
 
@@ -174,19 +179,20 @@ const Coinpage = () => {
       });
     }
   };
+
   const [openModal, setOpenModal] = useState(false);
 
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
   const classes = useStyles();
-  if (!coin) return <LinearProgress style={{ backgroundColor: '#CFB53B' }} />;
 
+  if (!coin && !errorMessage) return <LinearProgress style={{ backgroundColor: '#CFB53B' }} />;
+  
   return (
     <div className={classes.container}>
-      
       <div className={classes.sidebar}>
-      <FaArrowLeft
+        <FaArrowLeft
           onClick={() => navigate('/')}
           style={{
             position: 'absolute',
@@ -198,110 +204,117 @@ const Coinpage = () => {
             zIndex:10,
           }}
         />
-        <img
-          src={coin?.image.large}
-          alt={coin?.name}
-          height="200"
-          style={{ marginBottom: 20 }}
-        />
-        <Typography variant="h4" className={classes.heading}>
-          <span className={classes.nsymbol}>{coin?.name} </span>
-          <span style={{ color: "gray" }}>({coin?.symbol.toUpperCase()})</span>
-        </Typography>
-        <Typography className={classes.description}>
-          {parse(coin?.description.en.split('. ')[0])}.
-        </Typography>
-        <div className={classes.marketData}>
-          <Box className={classes.marketDataItem}>
-            <Typography variant="h5" className={classes.heading}>
-              Rank:
+        {errorMessage ? (
+          <Typography style={{ color: 'red', textAlign: 'center', marginTop: 20 }}>
+            {errorMessage}
+          </Typography>
+        ) : (
+          <>
+            <img
+              src={coin?.image.large}
+              alt={coin?.name}
+              height="200"
+              style={{ marginBottom: 20 }}
+            />
+            <Typography variant="h4" className={classes.heading}>
+              <span className={classes.nsymbol}>{coin?.name} </span>
+              <span style={{ color: "gray" }}>({coin?.symbol.toUpperCase()})</span>
             </Typography>
-            <Typography variant="h5" className={classes.nsymbol}>
-              {coin?.market_cap_rank}
+            <Typography className={classes.description}>
+              {parse(coin?.description.en.split('. ')[0])}.
             </Typography>
-          </Box>
-          <Box className={classes.marketDataItem}>
-            <Typography variant="h5" className={classes.heading}>
-              Current Price:
-            </Typography>
-            <Typography variant="h5" className={classes.nsymbol}>
-              {symbol}{' '}
-              {numberWithCommas(
-                coin?.market_data.current_price[currency.toLowerCase()]
-              )}
-            </Typography>
-          </Box>
-          <Box className={classes.marketDataItem}>
-            <Typography variant="h5" className={classes.heading}>
-              Market Cap:
-            </Typography>
-            <Typography variant="h5" className={classes.nsymbol}>
-              {symbol}{' '}
-              {numberWithCommas(
-                coin?.market_data.market_cap[currency.toLowerCase()]
-                  .toString()
-                  .slice(0, -6)
-              )}
-              M
-            </Typography>
-          </Box>
-          <Box className={classes.marketDataItem}>
-            <Typography variant="h5" className={classes.heading}>
-              24h Change:
-            </Typography>
-            <Typography
-              variant="h5"
-              className={classes.nsymbol}
-              style={{
-                color: coin?.market_data.price_change_percentage_24h > 0 ? 'green' : 'red',
-              }}
-            >
-              {coin?.market_data.price_change_percentage_24h.toFixed(2)}%
-            </Typography>
-          </Box>
-        </div>
-        <div style={{ width: '100%', marginTop: 20 }}>
-        <div style={{display:"flex" , alignItems:"center" , justifyContent:"center"}}>
-          {!user && (
-              <Button 
-              className={classes.button}
-                variant="outlined" 
-                style={{ color: '#CFB53B', borderColor: '#CFB53B' }} 
-                onClick={handleOpen}
-              >
-                Login / Sign Up for wallet and Token management
-              </Button>
-            )}
+            <div className={classes.marketData}>
+              <Box className={classes.marketDataItem}>
+                <Typography variant="h5" className={classes.heading}>
+                  Rank:
+                </Typography>
+                <Typography variant="h5" className={classes.nsymbol}>
+                  {coin?.market_cap_rank}
+                </Typography>
+              </Box>
+              <Box className={classes.marketDataItem}>
+                <Typography variant="h5" className={classes.heading}>
+                  Current Price:
+                </Typography>
+                <Typography variant="h5" className={classes.nsymbol}>
+                  {symbol}{' '}
+                  {numberWithCommas(
+                    coin?.market_data.current_price[currency.toLowerCase()]
+                  )}
+                </Typography>
+              </Box>
+              <Box className={classes.marketDataItem}>
+                <Typography variant="h5" className={classes.heading}>
+                  Market Cap:
+                </Typography>
+                <Typography variant="h5" className={classes.nsymbol}>
+                  {symbol}{' '}
+                  {numberWithCommas(
+                    coin?.market_data.market_cap[currency.toLowerCase()]
+                      .toString()
+                      .slice(0, -6)
+                  )}
+                  M
+                </Typography>
+              </Box>
+              <Box className={classes.marketDataItem}>
+                <Typography variant="h5" className={classes.heading}>
+                  24h Change:
+                </Typography>
+                <Typography
+                  variant="h5"
+                  className={classes.nsymbol}
+                  style={{
+                    color: coin?.market_data.price_change_percentage_24h > 0 ? 'green' : 'red',
+                  }}
+                >
+                  {coin?.market_data.price_change_percentage_24h.toFixed(2)}%
+                </Typography>
+              </Box>
             </div>
-          
-          {user && (
-            <Button
-              variant="outlined"
-              style={{
-                width: '100%',
-                height: 40,
-                marginTop: 20,
-                backgroundColor: isWatchlisted ? "#ed1806" : "#CFB53B",
-                color: isWatchlisted ? "white" : "black",
-              }}
-              onClick={isWatchlisted ? removeFromWatchlist : addToWatchlist}
-            >
-              {isWatchlisted ? "Remove from Watchlist" : "Add to Watchlist"} 
-            </Button>
-          )}
-          {user && (
-            <Button
-            variant='contained'
-            color='secondary'
-            onClick={() => navigate("/tokens")}
-            style={{  marginTop: 25, marginBottom: 8, width: '100%',
-                height: 40,
-                marginTop: 20, }}
-          >
-            Manage Tokens
-          </Button>
-          )}
-        </div>
+            <div style={{ width: '100%', marginTop: 20 }}>
+              <div style={{display:"flex" , alignItems:"center" , justifyContent:"center"}}>
+                {!user && (
+                    <Button 
+                    className={classes.button}
+                      variant="outlined" 
+                      style={{ color: '#CFB53B', borderColor: '#CFB53B' }} 
+                      onClick={handleOpen}
+                    >
+                      Login / Sign Up for wallet and Token management
+                    </Button>
+                  )}
+              </div>
+              {user && (
+                <Button
+                  variant="outlined"
+                  style={{
+                    width: '100%',
+                    height: 40,
+                    marginTop: 20,
+                    backgroundColor: isWatchlisted ? "#ed1806" : "#CFB53B",
+                    color: isWatchlisted ? "white" : "black",
+                  }}
+                  onClick={isWatchlisted ? removeFromWatchlist : addToWatchlist}
+                >
+                  {isWatchlisted ? "Remove from Watchlist" : "Add to Watchlist"} 
+                </Button>
+              )}
+              {user && (
+                <Button
+                variant='contained'
+                color='secondary'
+                onClick={() => navigate("/tokens")}
+                style={{  marginTop: 25, marginBottom: 8, width: '100%',
+                    height: 40,
+                    marginTop: 20, }}
+              >
+                Manage Tokens
+              </Button>
+              )}
+            </div>
+          </>
+        )}
       </div>
       <CoinInfo coin={coin} />
       <AuthModal triggerOpen={openModal} handleClose={handleClose} />

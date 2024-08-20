@@ -87,7 +87,7 @@ const Header = () => {
             <img
               src={logo}
               alt="logo"
-              style={{ width: 50, cursor: 'pointer', padding: 5 }}
+              style={{ width: 50, cursor: 'pointer', padding: 5, marginLeft: 0 }}
               onClick={() => navigate('/')}
             />
             <Typography
