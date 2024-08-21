@@ -3,9 +3,9 @@
 
 
 
-
-------------------------------------------------------------![Designer (8)-photoaidcom-cropped (2)](https://github.com/user-attachments/assets/13340545-5aa5-48a2-9e62-a27b45ee7e23)
-________________________________________________________________
+<p align="center" style="background-color:black; padding: 10px; ">
+  <img src="./public/favicon.ico" alt="Logo" width="20%">
+</p>
 
 ---
 **Live Link**
@@ -17,6 +17,18 @@ Explore the live version of the Crypto-Portfolio App here: [Live Link](https://c
 <p align="center" style="background-color:black; padding: 10px; ">
   <img src="./readmeAssets/Images/hero.png" alt="Crypto-Portfolio Banner" width="100%">
 </p>
+
+---
+
+
+## **<span style="color:gold;">Tech Stack</span>**
+
+The app is powered by the latest technologies, ensuring performance, scalability, and a top-notch user experience:
+
+- **Frontend:**  ![React.js](https://img.shields.io/badge/React.js-61DAFB?style=flat&logo=react&logoColor=white) ![Material-UI](https://img.shields.io/badge/Material--UI-007FFF?style=flat&logo=mui&logoColor=white)  ![Chart.js](https://img.shields.io/badge/Chart.js-F7DF1E?style=flat&logo=chart.js&logoColor=white)
+- **Blockchain Interaction:** ![Web3.js](https://img.shields.io/badge/Web3.js-080A16?style=flat&logo=ethereum&logoColor=white) ![Ethers.js](https://img.shields.io/badge/Ethers.js-627EEA?style=flat&logo=ethereum&logoColor=white)
+- **Backend:** ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=firebase&logoColor=white)
+- **Deployment:** ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white)
 
 ---
 
@@ -34,7 +46,7 @@ Welcome to **<span style="color:gold;">Crypto-Portfolio App</span>** — your ul
 
 ---
 
-##**<span style="color:gold;">Visual Experience</span>**
+##  **<span style="color:gold;">Visual Experience</span>**
 
 
 
@@ -58,7 +70,7 @@ Welcome to **<span style="color:gold;">Crypto-Portfolio App</span>** — your ul
 
 ---
 
-## 📹 **<span style="color:gold;">Video Demo</span>**
+##  **<span style="color:gold;">Video Demo</span>**
 
 Get a live feel of the Crypto-Portfolio App in action! Watch the demo:
 
@@ -74,18 +86,7 @@ Get a live feel of the Crypto-Portfolio App in action! Watch the demo:
 
 ---
 
-## 🛠 **<span style="color:gold;">Tech Stack</span>**
-
-The app is powered by the latest technologies, ensuring performance, scalability, and a top-notch user experience:
-
-- **Frontend:** [React.js](https://reactjs.org/), [Material-UI](https://mui.com/) , [Chart Js](https://www.npmjs.com/package/react-chartjs-2)
-- **Blockchain Interaction:** [Web3.js](https://web3js.readthedocs.io/), [Ethers.js](https://docs.ethers.io/)
-- **Backend:** [Firebase](https://firebase.google.com/) for authentication and data management
-- **Deployment:**  [Vercel](https://vercel.com/)
-
----
-
-## 🚀 **<span style="color:gold;">Getting Started</span>**
+##  **<span style="color:gold;">Getting Started</span>**
 
 Follow these steps to set up the Crypto-Portfolio App locally:
 
@@ -114,7 +115,7 @@ npm start
 
 ---
 
-🧩 **Code Structure**
+ **Code Structure**
 
 Our app is designed with a modular architecture, ensuring maintainability and scalability. Here’s a quick overview of the key components:
 
@@ -134,7 +135,7 @@ Our app is designed with a modular architecture, ensuring maintainability and sc
 
 ---
 
-🎯 **Contribution Guidelines**
+ **Contribution Guidelines**
 
 We welcome contributions from developers worldwide! Here’s how you can get involved:
 
